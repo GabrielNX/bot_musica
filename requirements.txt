@@ -1,0 +1,4 @@
+discord.py
+pafy
+youtube_dl
+PyNaCl
