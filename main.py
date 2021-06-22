@@ -4,7 +4,7 @@ import pafy
 import discord
 from discord.ext import commands
 
-intents = discord.Intents.all()
+intents = discord.Intents.default()
 intents.members = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
@@ -171,7 +171,7 @@ class BotMusica(commands.Cog):
         if votes[u"\u2705"] > 0:
             if votes[u"\U0001F6AB"] == 0 or votes[u"\u2705"] / (votes[u"\u2705"] + votes[u"\U0001F6AB"]) > 0.79: # 80% or higher
                 skip = True
-                embed = discord.Embed(title="música skip bem sucedido", description="***A votação para pular a música atual foi bem-sucedida, pulando agora.***", colour=discord.Colour.green())
+                embed = discord.Embed(title="skip bem sucedido", description="***A votação para pular a música atual foi bem-sucedida, pulando agora.***", colour=discord.Colour.green())
 
         if not skip:
             embed = discord.Embed(title="Falha ao pular música", description="*A votação para pular a música atual falhou.*\n\n**A votação falhou, a votação requer pelo menos 80% dos membros para pular.**", colour=discord.Colour.red())
@@ -184,21 +184,6 @@ class BotMusica(commands.Cog):
         if skip:
             ctx.voice_client.stop()
             await self.check_queue(ctx)
-
-    # @commands.command()                          
-    # async def volume(ctx, volume: float):                   
-    #     voice = get(commands.voice_clients, guild=ctx.guild)  
-
-    #     if 0 <= volume <= 100:                              
-    #         if voice.is_playing():                          
-    #             novo_volume = volume / 100                   
-    #             voice_client.volume = novo_volume            
-    #         else:                                           
-    #             await ctx.reply("#")   
-    #     else:                                               
-    #         await ctx.reply("#")
-
-    #     await ctx.reply(f"Volume: {volume}")    
 
 async def setup():  #Buffering
     await bot.wait_until_ready() 
