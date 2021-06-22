@@ -3,3 +3,4 @@ pafy
 youtube_dl
 asyncio
 PyNaCl
+ffmpeg
