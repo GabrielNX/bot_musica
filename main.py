@@ -4,7 +4,7 @@ import pafy
 import discord
 from discord.ext import commands
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 intents.members = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
@@ -205,4 +205,4 @@ async def setup():  #Buffering
     bot.add_cog(BotMusica(bot))
 
 bot.loop.create_task(setup()) #Loops e tarefas
-bot.run("ODU1MjU2MzQyNjI4MTM5MDM4.YMv1iQ.PFgkcd0r5e1lEVpwa-d-9XSH8qU")
+bot.run("ODU3MDMxMTg4MzkxOTE5NjI3.YNJqfg.Ky6OAjzLH7WUZNYW5kYPDGNZtks")
