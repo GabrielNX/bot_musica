@@ -4,6 +4,7 @@ import pafy
 import discord
 from discord.ext import commands
 
+
 intents = discord.Intents.default()
 intents.members = True
 
@@ -64,38 +65,42 @@ class BotMusica(commands.Cog):
 
     @commands.command()
     async def play(self, ctx, *, song=None):
-        
-        if song is None:
-            return await ctx.send("Você deve incluir uma música para tocar.")
+        try:
+            discord.opus.load_opus()
+            if song is None:
+                return await ctx.send("Você deve incluir uma música para tocar.")
 
-        if ctx.voice_client is None:
-            return await ctx.send("Devo estar em um canal de voz para tocar uma música.")
+            if ctx.voice_client is None:
+                return await ctx.send("Devo estar em um canal de voz para tocar uma música.")
 
-        if not ("youtube.com/watch?" in song or "https://youtu.be/" in song):
-            await ctx.send("Procurando uma música, isso pode levar alguns segundos.")
+            if not ("youtube.com/watch?" in song or "https://youtu.be/" in song):
+                await ctx.send("Procurando uma música, isso pode levar alguns segundos.")
 
-            result = await self.search_song(1, song, get_url=True)
+                result = await self.search_song(1, song, get_url=True)
 
-            if result is None:
-                return await ctx.send("Não consegui encontrar a música fornecida, tente usar meu comando de pesquisa. Digite !procurar.")
+                if result is None:
+                    return await ctx.send("Não consegui encontrar a música fornecida, tente usar meu comando de pesquisa. Digite !procurar.")
 
-            song = result[0]
+                song = result[0]
 
-        if ctx.voice_client.source is not None:
-            queue_len = len(self.song_queue[ctx.guild.id])
+            if ctx.voice_client.source is not None:
+                queue_len = len(self.song_queue[ctx.guild.id])
 
-            if queue_len < 10:
-                self.song_queue[ctx.guild.id].append(song)
-                return await ctx.send(f"No momento, estou reproduzindo uma música, esta música foi adicionada à fila na posição: {queue_len+1}.")
+                if queue_len < 10:
+                    self.song_queue[ctx.guild.id].append(song)
+                    return await ctx.send(f"No momento, estou reproduzindo uma música, esta música foi adicionada à fila na posição: {queue_len+1}.")
 
-            else:
-                return await ctx.send("Desculpe, só posso enfileirar até 10 músicas, aguarde a música atual terminar.")
+                else:
+                    return await ctx.send("Desculpe, só posso enfileirar até 10 músicas, aguarde a música atual terminar.")
 
-        await self.play_song(ctx, song)
-        await ctx.send(f"Tocando agora: {song}")
+            await self.play_song(ctx, song)
+            await ctx.send(f"Tocando agora: {song}")
+        except Exception:
+            await ctx.send("Digite o nome da música com mais detalhes.")
 
     @commands.command()  #Comando procurar, caso a pesquisa de música no play não seja de primeira.
     async def procurar(self, ctx, *, song=None):
+        discord.opus.load_opus()
         if song is None: return await ctx.send("Você se esqueceu de incluir uma música para pesquisar.")
 
         await ctx.send("Procurando uma música, isso pode levar alguns segundos.")
@@ -114,6 +119,7 @@ class BotMusica(commands.Cog):
 
     @commands.command()
     async def fila(self, ctx):
+        discord.opus.load_opus()
         if len(self.song_queue[ctx.guild.id]) == 0:
             return await ctx.send("Atualmente não há músicas na fila.")
 
@@ -129,6 +135,7 @@ class BotMusica(commands.Cog):
 
     @commands.command()
     async def skip(self, ctx):
+        discord.opus.load_opus()
         if ctx.voice_client is None:
             return await ctx.send("Eu não estou tocando nenhuma música.")
 
@@ -167,7 +174,7 @@ class BotMusica(commands.Cog):
         skip = False
 
         if votes[u"\u2705"] > 0:
-            if votes[u"\U0001F6AB"] == 0 or votes[u"\u2705"] / (votes[u"\u2705"] + votes[u"\U0001F6AB"]) > 0.79: # 80% or higher
+            if votes[u"\U0001F6AB"] == 0 or votes[u"\u2705"] / (votes[u"\u2705"] + votes[u"\U0001F6AB"]) > 0.79: # 80% dos que estão na call
                 skip = True
                 embed = discord.Embed(title="skip bem sucedido", description="***A votação para pular a música atual foi bem-sucedida, pulando agora.***", colour=discord.Colour.green())
 
