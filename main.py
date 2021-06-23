@@ -26,6 +26,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 #Status do bot no console
 @bot.event
 async def on_ready():
+    await bot.change_presence(activity=discord.Streaming(name=f'❓|PREFIXO PADRÃO: !ajuda', url='https://twitch.tv/123'))
     print(f"{bot.user.name} On-line!.")
 
 #Classe, config os comandos.
@@ -57,11 +58,25 @@ class BotMusica(commands.Cog):
         ctx.voice_client.play(discord.PCMVolumeTransformer(discord.FFmpegPCMAudio(url)), after=lambda error: self.bot.loop.create_task(self.check_queue(ctx)))
         ctx.voice_client.source.volume = 0.5
     
-    #Comandos: Priorizar: Entrar, sair, play, procurar, fila, skip. Arrumar volume? talves...
+    #Comandos: ajuda. Priorizar: Entrar, sair, play, procurar, fila, skip. Arrumar volume? talves...
+
     @commands.command()
-    async def entrar(self, ctx):
+    async def ajuda(self, ctx):
+        self.embed = discord.Embed(title="GAMER'S MUSIC | 🤖",description="🔹🔹 LISTA DE COMANDOS 🔹🔹", color=0xeee657)
+        self.embed.add_field(name='DIGITE: join',value='**EX: join** `O bot ira entrar no canal de voz.` ```OBS: Antes de fazer o comando, você deve está no canal primeiro!```', inline=False)
+        self.embed.add_field(name='DIGITE: play',value='**EX: play <nome da música>** `O bot ira tocar a música.` ```OBS: Veja se o nome música foi digitada corretamente.```', inline=False)
+        self.embed.add_field(name='DIGITE: sair',value='**EX: sair** `O bot ira se desconectar do canal de voz.` ```OBS: Não existe o comando stop, sair faz com que ele saia do canal de voz.```', inline=False)
+        self.embed.add_field(name='DIGITE: procurar',value='**EX: procurar <link da música>** `Essa é uma alternativa para procurar músicas específicas.` ```OBS: O link tem que ser somente o do youtube!```', inline=False)
+        self.embed.add_field(name='DIGITE: fila',value='**EX: fila** `O bot mostra a fileira de música.` ```OBS: O bot pode enfileirar até 10 músicas!```', inline=False)
+        self.embed.add_field(name='DIGITE: skip',value='**EX: skip** `O bot ira pular a música atual para a próxima música da fila` ```OBS: Uma votação é feita e ela dura 15 segundos!```', inline=False)
+
+        await ctx.message.delete()
+        await ctx.send(embed=self.embed)
+
+    @commands.command()
+    async def join(self, ctx):
         if ctx.author.voice is None:
-            return await ctx.send("Você precisa está em um canal de voz! depois digite !entrar")
+            return await ctx.send("Você precisa está em um canal de voz! depois digite !join")
 
         if ctx.voice_client is not None:
             await ctx.voice_client.disconnect()
@@ -140,7 +155,7 @@ class BotMusica(commands.Cog):
 
             i += 1
 
-        embed.set_footer(text="Obrigado por me usar!")
+        embed.set_footer(text=f"Musicas na fila agora: {i}, obs: A que está tocando também conta. :D")
         await ctx.send(embed=embed)
 
     @commands.command()
