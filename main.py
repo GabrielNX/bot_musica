@@ -26,7 +26,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 #Status do bot no console
 @bot.event
 async def on_ready():
-    await bot.change_presence(activity=discord.Streaming(name=f'❓|PREFIXO PADRÃO: !ajuda', url='https://twitch.tv/123'))
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f'| !ajuda'))
     print(f"{bot.user.name} On-line!.")
 
 #Classe, config os comandos.
