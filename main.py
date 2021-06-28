@@ -21,12 +21,13 @@ print(c)
 intents = discord.Intents.default()
 intents.members = True
 
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = commands.Bot(command_prefix="!", intents=intents, description="~")
 
 #Status do bot no console
 @bot.event
 async def on_ready():
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f'| !ajuda'))
+
     print(f"{bot.user.name} On-line!.")
 
 #Classe, config os comandos.
@@ -214,6 +215,18 @@ class BotMusica(commands.Cog):
         if skip:
             ctx.voice_client.stop()
             await self.check_queue(ctx)
+    
+    @commands.command()
+    async def volume(self, ctx, volume:int):
+
+        if ctx.voice_client is None:
+            return await ctx.send("Eu preciso está no canal de voz para usar o comando volume.")
+        
+        if volume < 0 or volume > 100:
+            return await ctx.send("Defina um volume entre 0 a 100.")
+        
+        ctx.voice_client.source.volume = volume/100
+        await ctx.send(f"Volume definido para: {volume}")
 
 async def setup():  #Buffering
     await bot.wait_until_ready() 
