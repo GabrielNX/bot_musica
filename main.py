@@ -70,6 +70,7 @@ class BotMusica(commands.Cog):
         self.embed.add_field(name='DIGITE: procurar',value='**EX: procurar <link da música>** `Essa é uma alternativa para procurar músicas específicas.` ```OBS: O link tem que ser somente o do youtube!```', inline=False)
         self.embed.add_field(name='DIGITE: fila',value='**EX: fila** `O bot mostra a fileira de música.` ```OBS: O bot pode enfileirar até 10 músicas!```', inline=False)
         self.embed.add_field(name='DIGITE: skip',value='**EX: skip** `O bot ira pular a música atual para a próxima música da fila` ```OBS: Uma votação é feita e ela dura 15 segundos!```', inline=False)
+        self.embed.add_field(name='DIGITE: volume',value='**EX: volume** `O bot ira setar o volume definido.` ```OBS: O volume tem o limite entre 0 a 100.```', inline=False)
 
         await ctx.message.delete()
         await ctx.send(embed=self.embed)
