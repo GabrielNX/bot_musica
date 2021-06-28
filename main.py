@@ -103,7 +103,7 @@ class BotMusica(commands.Cog):
             return await ctx.send("Devo estar em um canal de voz para tocar uma música.")
 
         if not ("youtube.com/watch?" in song or "https://youtu.be/" in song):
-            await ctx.send("Procurando uma música, isso pode levar alguns segundos.")
+            await ctx.send("Procurando música, isso pode levar alguns segundos.")
 
             result = await self.search_song(1, song, get_url=True)
 
@@ -130,7 +130,7 @@ class BotMusica(commands.Cog):
         
         if song is None: return await ctx.send("Você se esqueceu de incluir uma música para pesquisar.")
 
-        await ctx.send("Procurando uma música, isso pode levar alguns segundos.")
+        await ctx.send("Procurando música, isso pode levar alguns segundos.")
 
         info = await self.search_song(5, song)
 
