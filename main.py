@@ -21,12 +21,12 @@ print(c)
 intents = discord.Intents.default()
 intents.members = True
 
-bot = commands.Bot(command_prefix="!", intents=intents, description="~")
+bot = commands.Bot(command_prefix="#", intents=intents, description="~")
 
 #Status do bot no console
 @bot.event
 async def on_ready():
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f'| !ajuda'))
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=f'| #ajuda'))
 
     print(f"{bot.user.name} On-line!.")
 
@@ -78,7 +78,7 @@ class BotMusica(commands.Cog):
     @commands.command()
     async def join(self, ctx):
         if ctx.author.voice is None:
-            return await ctx.send("Você precisa está em um canal de voz! depois digite !join")
+            return await ctx.send("Você precisa está em um canal de voz! depois digite #join")
 
         if ctx.voice_client is not None:
             await ctx.voice_client.disconnect()
